@@ -15,7 +15,7 @@ const dataController = {
     })
   },
   create (req, res, next) {
-    Bookmark.create(req, body, (err, createdBookmark) => {
+    Bookmark.create(req.body, (err, createdBookmark) => {
       if (err) {
         res.status(400).send({
           msg: err.message
@@ -30,7 +30,8 @@ const dataController = {
     Bookmark.findById(req.params.id, (err, foundBookmark) => {
       if (err) {
         res.status(400).send({
-          msg: err.message
+          msg: err.message,
+          output: 'Could not find a bookmark with that ID'
         })
       } else {
         res.locals.data.bookmark = foundBookmark
@@ -51,7 +52,7 @@ const dataController = {
     })
   },
   update (req, res, next) {
-    Bookmark.findByIdAndUpdate(req.params.id, (err, updatedBookmark) => {
+    Bookmark.findByIdAndUpdate(req.params.id, req.body, { new: true }, (err, updatedBookmark) => {
       if (err) {
         res.status(400).send({
           msg: err.message
